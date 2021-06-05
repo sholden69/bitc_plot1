@@ -29,7 +29,7 @@ from sqlalchemy.types import Integer, Text, String, DateTime, VARCHAR, Float
 sqlEngine=create_engine('mysql+pymysql://guest:guest@127.0.0.1/finance', pool_recycle=3600,echo=True)
 dbConnection=sqlEngine.connect()
 dbConnection.execute("TRUNCATE TABLE fidelity_latest_prices")
-df=pd.read_sql("SELECT * FROM fidelity_info WHERE urlcore IS NOT null", dbConnection)
+df=pd.read_sql("SELECT urlcore,fundlabel FROM fidelity_info WHERE urlcore IS NOT null", dbConnection)
 df['price'] = df['urlcore'].apply(get_price)
 df.to_sql(
     'fidelity_latest_prices',
