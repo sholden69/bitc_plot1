@@ -37,6 +37,9 @@ dbConnection=sqlEngine.connect()
 dbConnection.execute("TRUNCATE TABLE fidelity_latest_prices")
 df=pd.read_sql("SELECT urlcore,fundlabel FROM fidelity_info WHERE urlcore IS NOT null", dbConnection)
 df['price'] = df['urlcore'].apply(get_price)
+# drop any missing fidelity_prices
+df=df[df['price'].ne(-1)]
+# write back to the db
 df.to_sql(
     'fidelity_latest_prices',
     sqlEngine,
