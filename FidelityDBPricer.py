@@ -18,9 +18,15 @@ def get_price(url_core):
     for r in res:
         r=r.replace(',', '')
         if (r[-1]=='p'):
-            prc=float(r[:-1])/100
+            try:
+                prc=float(r[:-1])/100
+            except ValueError:
+                prc=-1
         else:
-            prc=float(r[1:])
+            try:
+                prc=float(r[1:])
+            except ValueError:
+                prc=-1
     return prc  
 
 # https://docs.sqlalchemy.org/en/14/core/engines.html#postgresql 
